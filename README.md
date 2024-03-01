@@ -1,7 +1,7 @@
+# siteproxy 2.0
 <br />
 <a href="https://github.com/netptop/siteproxy/blob/master/README_english.md"><strong>English</strong></a>
 <br />
-# siteproxy 2.0
 Siteproxy 2.0 使用了service worker, 使得代理更加稳定, 可以代理了的网站更多。
 同时使用hono替代express，速度提高4倍。 支持cloudflare worker部署。
 反向代理, 免翻墙访问youtube/google, 支持github和telegram web登录。
