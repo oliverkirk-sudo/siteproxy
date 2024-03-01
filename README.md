@@ -1,8 +1,10 @@
 # siteproxy 2.0
+<br />
+<a href="https://github.com/netptop/siteproxy/blob/master/README_English.md"><strong>English</strong></a>
 Siteproxy 2.0 使用了service worker, 使得代理更加稳定, 可以代理了的网站更多。
 同时使用hono替代express，速度提高4倍。 支持cloudflare worker部署。
 反向代理, 免翻墙访问youtube/google, 支持github和telegram web登录。
-pure web page proxy to google/youtube, zero configuration from client side. Reverse proxy to all internet. 一键部署，翻墙利器。
+纯web页面的在线代理， 客户端无需任何配置，反向代理到internet。 
 
 ```
                                                  +----> google/youtube
@@ -21,8 +23,6 @@ user browser +-------------->+ siteproxy      +-------> wikipedia
 - [使用技巧](#使用技巧)
 - [部署到cloudflare_worker](#部署到cloudflare_worker)
 - [部署到vps或者云服务器](#部署到vps或者云服务器)
-- [cloudflare_worker_deployment](#cloudflare_worker_deployment)
-- [vps_deployment](#vps_deployment)
 - [联系方式](#联系方式)
 
 ### 特点
@@ -31,8 +31,8 @@ user browser +-------------->+ siteproxy      +-------> wikipedia
 - 支持密码控制代理，知道密码才能访问代理。
 - 不需要客户端的任何配置，访问代理网址即可访问全世界。
 - 支持github和telegram web登录。
-- enter siteproxy's address, and go surf on internet without censorship
-- no proxy setting from client side is needed. zero configuration from client browser
+- 输入部署siteproxy的代理网址，就可以访问全世界，并隐藏你的IP。
+- 客户端不需要任何软件安装，客户浏览器也不需要任何配置。 
 
 ### 使用技巧
 1. 可以通过部署的siteproxy进行git clone，方法:
@@ -75,42 +75,12 @@ git clone https://your-proxy-domain.name/user-your-password/https/github.com/the
 6. 打开并修改保存config.json文件:
    {
       "proxy_url": "https://your-proxy.domain.name", // 这个是你申请到的代理服务器域名
-      "token_prefix": "/user-SetYourPasswordHere/",  // 这个实际上是你的网站密码，用来防止非法访问
+      "token_prefix": "/user-SetYourPasswordHere/",  // 这个实际上是你的网站密码，用来防止非法访问,注意保留首尾的斜杠。
       "description": "注意:token_prefix相当于网站密码，请谨慎设置。 proxy_url和token_prefix合起来就是访问网址。"
    }
 7. 执行:nohup node bundle.js &
 8. 现在就可以在浏览器中访问你的域名了, 网址就是前面的proxy_url加上token_prefix.
 9. 如果想套CloudFlare加速, 可以参考CloudFlare说明
-```
-### cloudflare_worker_deployment
-```
-1. Assume your domain is already managed under Cloudflare, and set the DNS of your proxy website's domain to any IP, such as 1.1.1.1.
-2. Git clone this project, and use a text editor to open build/worker.js.
-3. Search for the string http://localhost:5006 and replace it with your proxy website's domain, for example, https://your-proxy-domain.name. Also, search for user22334455 and change it to the password you want to set.
-4. Create a worker, edit the worker, and copy and paste the edited worker.js from the previous step into the worker, then save and deploy.
-5. Add a worker route, directing your-proxy-domain.name/* to the worker you just saved.
-6. Now you can directly visit https://your-proxy-domain.name/user-your-password/, and it should work. Note to replace the domain and password with your own.
-```
-
-### vps_deployment
-```
-1. Create an SSL website (using certbot and nginx, Google the usage), configure nginx, /etc/nginx/sites-enabled/default should contain the following content: ... server { server_name your-proxy.domain.name; location / { proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; proxy_pass http://localhost:5006; } }
-2. Execute: sudo systemctl start nginx
-3. Under user environment, run the following commands to install Node environment, if you already have Node environment, skip this step:
-    (1) curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    (2) source ~/.bashrc
-    (3) nvm install v18
-4. Execute: git clone https://github.com/netptop/siteproxy.git;
-5. Execute: cd siteproxy;
-6. Open and modify the config.json file and save:
-   { 
-      "proxy_url": "https://your-proxy.domain.name",
-      "token_prefix": "/user-SetYourPasswordHere/",
-      "description": "Note: token_prefix acts as the website password, please set it carefully. proxy_url and token_prefix together form the access URL." 
-   }
-7. Execute: node bundle.js
-8. Now you can access your domain in the browser, address is actually proxy_url+token_prefix.
-9. If you want to use CloudFlare for acceleration, you can refer to CloudFlare's documentation.
 ```
 ### 联系方式
 Telegram群: @siteproxy
